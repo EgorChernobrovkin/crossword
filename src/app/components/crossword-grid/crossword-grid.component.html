@@ -1,0 +1,37 @@
+<div class="page-container">
+  <div class="content-container">
+    <h1 class="page-title">Crossword Game</h1>
+    <p class="page-description">Click on any cell to view its clue or check your answer</p>
+    
+    <div class="card">
+      <div class="card-content">
+        <div class="crossword-grid" [style.grid-template-columns]="gridTemplateColumns">
+          <div *ngFor="let cell of grid; let i = index" 
+               class="crossword-cell"
+               [class.solved]="cell.solved"
+               [class.clickable]="cell.isPartOfWord"
+               [class.empty]="!cell.isPartOfWord"
+               [class.hovered]="isCellInHoveredWord(cell)"
+               (mouseenter)="onCellMouseEnter(i)"
+               (mouseleave)="onCellMouseLeave()"
+               (click)="cell.isPartOfWord && onCellClick(i)">
+            <span class="word-number" *ngIf="cell.isStart">{{cell.wordNumber}}</span>
+            {{ cell.value }}
+          </div>
+        </div>
+
+        <div class="completion-section" *ngIf="isPuzzleComplete" [@slideIn]>
+          <div class="success-message">
+            <span class="material-icon">stars</span>
+            <h3>Congratulations!</h3>
+            <p>You've completed the crossword puzzle!</p>
+            <button class="button primary" (click)="router.navigate(['/success'])">
+              <span class="material-icon">celebration</span>
+              View Success Page
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

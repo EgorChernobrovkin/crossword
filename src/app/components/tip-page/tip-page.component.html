@@ -1,0 +1,44 @@
+<div class="page-container">
+  <div class="content-container">
+    <div class="card">
+      <div class="card-content">
+        <form [formGroup]="wordForm" *ngIf="currentWord">
+          <h2 class="card-title">{{ currentTip }}</h2>
+          
+          <div class="word-input">
+            <div class="form-field" *ngFor="let i of letterControls">
+              <input [formControlName]="'letter' + i"
+                     type="text"
+                     maxlength="1"
+                     (input)="onLetterInput(i)"
+                     [readonly]="isWordSolved">
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="button text" (click)="toggleExtraClues()" *ngIf="!isWordSolved">
+              <span class="material-icon">lightbulb</span>
+              {{ showExtraClues ? 'Hide Clues' : 'Show More Clues' }}
+            </button>
+
+            <button class="button text" (click)="onBack()">
+              <span class="material-icon">arrow_back</span>
+              Back to Grid
+            </button>
+          </div>
+
+          <div class="extra-clues" *ngIf="showExtraClues && !isWordSolved">
+            <p>Length: {{ currentWord.word.length }} letters</p>
+            <p>First letter: {{ currentWord.word[0] }}</p>
+            <p>Last letter: {{ currentWord.word[currentWord.word.length - 1] }}</p>
+          </div>
+
+          <div class="success-message" *ngIf="isWordSolved">
+            <span class="material-icon">check_circle</span>
+            <p>Great job! You solved this word correctly!</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> 
