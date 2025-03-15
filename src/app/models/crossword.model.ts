@@ -1,9 +1,8 @@
 export interface CrosswordWord {
   id: string;
   word: string;
-  clue: string;
   tip: string;
-  extraClues: string[];
+  clues: string[];
   position: {
     row: number;
     col: number;

@@ -12,33 +12,29 @@ export class CrosswordService {
     {
       id: '1',
       word: 'REACT',
-      clue: 'Popular UI library by Facebook',
-      tip: 'Think about modern web development tools starting with R',
-      extraClues: ['Starts with R', 'Uses JSX', 'Component-based'],
+      tip: 'Popular UI library by Facebook',
+      clues: ['Think about modern web development tools starting with R', 'Uses JSX', 'Component-based'],
       position: { row: 0, col: 0, direction: 'across' }
     },
     {
       id: '2',
       word: 'REDUX',
-      clue: 'State management library',
-      tip: 'Popular with React, starts with R',
-      extraClues: ['Starts with R', 'Uses actions and reducers', 'Has a store'],
+      tip: 'State management library',
+      clues: ['Popular with React, starts with R', 'Uses actions and reducers', 'Has a store'],
       position: { row: 0, col: 0, direction: 'down' }
     },
     {
       id: '3',
       word: 'TYPE',
-      clue: 'JavaScript with static types',
-      tip: 'Think about TypeScript without "Script"',
-      extraClues: ['4 letters', 'Part of TypeScript', 'Describes data structure'],
+      tip: 'JavaScript with static types',
+      clues: ['4 letters', 'Think about TypeScript without "Script"', 'Describes data structure'],
       position: { row: 2, col: 1, direction: 'across' }
     },
     {
       id: '4',
       word: 'CODE',
-      clue: 'What developers write',
-      tip: 'The essence of programming',
-      extraClues: ['4 letters', 'You write it', 'It becomes software'],
+      tip: 'What developers write',
+      clues: ['The essence of programming', '4 letters', 'You write it', 'It becomes software'],
       position: { row: 1, col: 3, direction: 'down' }
     }
   ];

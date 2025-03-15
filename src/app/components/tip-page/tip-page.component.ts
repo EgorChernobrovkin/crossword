@@ -33,7 +33,7 @@ export class TipPageComponent implements OnInit, OnDestroy {
   wordForm: FormGroup = this.fb.group({});
   letterControls: number[] = [];
   currentWord?: CrosswordWord;
-  currentClue: string = '';
+  currentTip: string = '';
   isWordSolved = false;
   showExtraClues = false;
   currentClueIndex = 0;
@@ -68,7 +68,7 @@ export class TipPageComponent implements OnInit, OnDestroy {
       }
 
       this.isWordSolved = solvedWordIds.includes(wordId);
-      this.currentClue = this.currentWord.clue;
+      this.currentTip = this.currentWord.tip;
       
       if (!this.wordForm.controls[`letter0`]) {
         this.initializeForm();
@@ -142,7 +142,7 @@ export class TipPageComponent implements OnInit, OnDestroy {
       this.showExtraClues = true;
       this.currentClueIndex = 0;
     } else {
-      if (this.currentWord && this.currentClueIndex < this.currentWord.extraClues.length - 1) {
+      if (this.currentWord && this.currentClueIndex < this.currentWord.clues.length - 1) {
         this.currentClueIndex++;
       } else {
         this.showExtraClues = false;
@@ -153,14 +153,14 @@ export class TipPageComponent implements OnInit, OnDestroy {
 
   getCurrentExtraClue(): string[] {
     if (!this.currentWord || !this.showExtraClues) return [];
-    return this.currentWord.extraClues.slice(0, this.currentClueIndex + 1);
+    return this.currentWord.clues.slice(0, this.currentClueIndex + 1);
   }
 
   getClueButtonText(): string {
     if (!this.showExtraClues) return 'Show More Clues';
     if (!this.currentWord) return 'Hide Clues';
     
-    const totalClues = this.currentWord.extraClues.length;
+    const totalClues = this.currentWord.clues.length;
     const currentClue = this.currentClueIndex + 1;
     
     if (currentClue === totalClues) return 'Hide Clues';
