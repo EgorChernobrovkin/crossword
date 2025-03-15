@@ -6,9 +6,12 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [RouterOutlet],
   template: `
-    <main>
-      <router-outlet></router-outlet>
-    </main>
+    <div class="sakura-container">
+      @for (i of [1,2,3,4,5,6,7,8,9,10]; track i) {
+        <div class="petal"></div>
+      }
+    </div>
+    <router-outlet></router-outlet>
   `,
   styles: [`
     main {
@@ -17,4 +20,6 @@ import { RouterOutlet } from '@angular/router';
     }
   `]
 })
-export class AppComponent {} 
+export class AppComponent {
+  title = 'crossword-app';
+} 

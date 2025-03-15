@@ -33,9 +33,10 @@ export class TipPageComponent implements OnInit, OnDestroy {
   wordForm: FormGroup = this.fb.group({});
   letterControls: number[] = [];
   currentWord?: CrosswordWord;
-  currentTip: string = '';
+  currentClue: string = '';
   isWordSolved = false;
   showExtraClues = false;
+  currentClueIndex = 0;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -67,7 +68,7 @@ export class TipPageComponent implements OnInit, OnDestroy {
       }
 
       this.isWordSolved = solvedWordIds.includes(wordId);
-      this.currentTip = this.currentWord.tip;
+      this.currentClue = this.currentWord.clue;
       
       if (!this.wordForm.controls[`letter0`]) {
         this.initializeForm();
@@ -111,14 +112,15 @@ export class TipPageComponent implements OnInit, OnDestroy {
   }
 
   private validateWord() {
-    if (!this.currentWord) return;
+    if (!this.currentWord || this.isWordSolved) return;
 
-    const word = this.letterControls
-      .map(i => this.wordForm.get(`letter${i}`)?.value || '')
-      .join('')
-      .toUpperCase();
-
-    if (word.length === this.currentWord.word.length) {
+    const formValues = this.letterControls.map(i => this.wordForm.get(`letter${i}`)?.value);
+    
+    // Check if all cells have a value (not null, undefined, or empty string)
+    const allCellsFilled = formValues.every(value => value?.trim() !== '');
+    
+    if (allCellsFilled) {
+      const word = formValues.join('').toUpperCase();
       this.store.dispatch(CrosswordActions.validateWord({
         wordId: this.currentWord.id,
         attempt: word
@@ -136,7 +138,33 @@ export class TipPageComponent implements OnInit, OnDestroy {
   }
 
   toggleExtraClues() {
-    this.showExtraClues = !this.showExtraClues;
+    if (!this.showExtraClues) {
+      this.showExtraClues = true;
+      this.currentClueIndex = 0;
+    } else {
+      if (this.currentWord && this.currentClueIndex < this.currentWord.extraClues.length - 1) {
+        this.currentClueIndex++;
+      } else {
+        this.showExtraClues = false;
+        this.currentClueIndex = 0;
+      }
+    }
+  }
+
+  getCurrentExtraClue(): string[] {
+    if (!this.currentWord || !this.showExtraClues) return [];
+    return this.currentWord.extraClues.slice(0, this.currentClueIndex + 1);
+  }
+
+  getClueButtonText(): string {
+    if (!this.showExtraClues) return 'Show More Clues';
+    if (!this.currentWord) return 'Hide Clues';
+    
+    const totalClues = this.currentWord.extraClues.length;
+    const currentClue = this.currentClueIndex + 1;
+    
+    if (currentClue === totalClues) return 'Hide Clues';
+    return `Show Next Clue (${currentClue}/${totalClues})`;
   }
 
   onBack() {
