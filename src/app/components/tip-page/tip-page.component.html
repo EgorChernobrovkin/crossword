@@ -17,7 +17,7 @@
             </div>
 
             <div class="word-input-section">
-              <div class="word-input">
+              <div class="word-input" [style.minWidth.px]="letterControls.length * 64">
                 <div class="form-field" *ngFor="let i of letterControls">
                   <input [formControlName]="'letter' + i"
                          type="text"

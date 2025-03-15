@@ -22,7 +22,7 @@
 .clue-section {
   text-align: center;
   width: 100%;
-  max-width: 600px;
+  margin-bottom: var(--spacing-6);
   
   .word-number {
     display: inline-block;
@@ -43,11 +43,30 @@
   }
 }
 
+.content-container {
+  width: fit-content;
+  min-width: 600px;
+  margin: 0 auto;
+}
+
+.card {
+  background: var(--surface-1);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  width: fit-content;
+  min-width: 100%;
+}
+
+.card-content {
+  padding: var(--spacing-6);
+}
+
 .word-input-section {
   width: 100%;
   display: flex;
   justify-content: center;
   padding: var(--spacing-6) 0;
+  margin: 0 auto;
 }
 
 .feedback-section {
@@ -112,17 +131,16 @@
 }
 
 .word-input {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 48px);
+  display: inline-flex;
+  flex-wrap: nowrap;
   gap: var(--spacing-4);
+  padding: 0 var(--spacing-4);
   justify-content: center;
-  width: 100%;
-  padding: var(--spacing-4) var(--spacing-6);
-  box-sizing: border-box;
-
+  
   .form-field {
     width: 48px;
     height: 48px;
+    flex: 0 0 48px;
     margin: 0;
 
     input {
@@ -157,14 +175,11 @@
 }
 
 .page-container {
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 40px 20px;
-}
-
-.content-container {
-  max-width: 600px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
 }
 
 .page-title {
