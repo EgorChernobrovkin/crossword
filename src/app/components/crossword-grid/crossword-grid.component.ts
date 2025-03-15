@@ -38,13 +38,11 @@ interface GridCell {
   ]
 })
 export class CrosswordGridComponent implements OnInit, OnDestroy {
-  grid: GridCell[] = Array(25).fill(null).map(() => ({
-    value: '',
-    solved: false,
-    isPartOfWord: false,
-    wordIds: []
-  }));
-  gridTemplateColumns = 'repeat(5, 1fr)';
+  readonly GRID_ROWS = 13; // Configurable number of rows
+  readonly GRID_COLS = 14; // Configurable number of columns
+  
+  grid: GridCell[] = this.createEmptyGrid();
+  gridTemplateColumns = `repeat(${this.GRID_COLS}, 1fr)`;
   words: CrosswordWord[] = [];
   solvedWordIds: string[] = [];
   isPuzzleComplete = false;
@@ -56,6 +54,27 @@ export class CrosswordGridComponent implements OnInit, OnDestroy {
     public router: Router,
     private crosswordService: CrosswordService
   ) {}
+
+  private createEmptyGrid(): GridCell[] {
+    const totalCells = this.GRID_ROWS * this.GRID_COLS;
+    return Array(totalCells).fill(null).map(() => ({
+      value: '',
+      solved: false,
+      isPartOfWord: false,
+      wordIds: []
+    }));
+  }
+
+  private getCellIndex(row: number, col: number): number {
+    return row * this.GRID_COLS + col;
+  }
+
+  private getCellPosition(index: number): { row: number, col: number } {
+    return {
+      row: Math.floor(index / this.GRID_COLS),
+      col: index % this.GRID_COLS
+    };
+  }
 
   ngOnInit() {
     // Load crossword data
@@ -82,8 +101,7 @@ export class CrosswordGridComponent implements OnInit, OnDestroy {
   }
 
   onCellClick(index: number) {
-    const row = Math.floor(index / 5);
-    const col = index % 5;
+    const { row, col } = this.getCellPosition(index);
     
     const cell = this.grid[index];
     if (!cell.isPartOfWord) return;
@@ -109,8 +127,7 @@ export class CrosswordGridComponent implements OnInit, OnDestroy {
   }
 
   onCellMouseEnter(index: number) {
-    const row = Math.floor(index / 5);
-    const col = index % 5;
+    const { row, col } = this.getCellPosition(index);
     
     const cell = this.grid[index];
     if (!cell.isPartOfWord) return;
@@ -142,12 +159,7 @@ export class CrosswordGridComponent implements OnInit, OnDestroy {
 
   private initializeGrid() {
     // Reset grid
-    this.grid = Array(25).fill(null).map(() => ({
-      value: '',
-      solved: false,
-      isPartOfWord: false,
-      wordIds: []
-    }));
+    this.grid = this.createEmptyGrid();
     
     // First pass: mark all cells that are part of words and set starting positions
     this.words.forEach((word, index) => {
@@ -155,18 +167,18 @@ export class CrosswordGridComponent implements OnInit, OnDestroy {
       const letters = word.word.split('');
       
       // Mark the starting position
-      const startIndex = row * 5 + col;
-      if (startIndex < 25) {
+      const startIndex = this.getCellIndex(row, col);
+      if (startIndex < this.grid.length) {
         this.grid[startIndex].isStart = true;
         this.grid[startIndex].wordNumber = index + 1;
       }
       
       letters.forEach((letter, letterIndex) => {
         const gridIndex = direction === 'across' 
-          ? row * 5 + col + letterIndex
-          : (row + letterIndex) * 5 + col;
+          ? this.getCellIndex(row, col + letterIndex)
+          : this.getCellIndex(row + letterIndex, col);
           
-        if (gridIndex < 25) {
+        if (gridIndex < this.grid.length) {
           const cell = this.grid[gridIndex];
           cell.isPartOfWord = true;
           cell.wordIds.push(word.id);
