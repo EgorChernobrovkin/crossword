@@ -1,7 +1,7 @@
 <div class="page-container">
   <div class="content-container">
-    <h1 class="page-title">Crossword Game</h1>
-    <p class="page-description">Click on any cell to view its clue or check your answer</p>
+    <h1 class="page-title">Crossword Game for Kati</h1>
+    <p class="page-description">Нажми на любую клетку, чтобы перейти к одгадываюнию слова. Пожалуйста, отгадывай слова по порядку</p>
     
     <div class="card">
       <div class="card-content">
@@ -20,14 +20,17 @@
           </div>
         </div>
 
-        <div class="completion-section" *ngIf="isPuzzleComplete" [@slideIn]>
+        <div class="completion-section" 
+             *ngIf="isPuzzleComplete" 
+             [@slideIn]
+             #completionSection>
           <div class="success-message">
             <span class="material-icon">stars</span>
-            <h3>Congratulations!</h3>
-            <p>You've completed the crossword puzzle!</p>
+            <h3>Ура!</h3>
+            <p>Ты нашла все подарки и разгадала весь кроссворд! Остался последний подарок и последнее слово</p>
             <button class="button primary" (click)="router.navigate(['/success'])">
               <span class="material-icon">celebration</span>
-              View Success Page
+              За последним подарком
             </button>
           </div>
         </div>

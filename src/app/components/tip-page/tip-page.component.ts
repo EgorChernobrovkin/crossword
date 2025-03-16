@@ -170,4 +170,21 @@ export class TipPageComponent implements OnInit, OnDestroy {
   onBack() {
     this.router.navigate(['/']);
   }
+
+  onImageError(event: any) {
+    console.error('Error loading image:', event);
+    console.log('Attempted image URL:', this.currentWord?.congratulation?.imageUrl);
+    console.log('Current word:', this.currentWord);
+    
+    // Try to load image with absolute path as fallback
+    const img = event.target;
+    if (!img.src.startsWith('http')) {
+      const absolutePath = window.location.origin + '/' + this.currentWord?.congratulation?.imageUrl.replace(/^\.\//, '');
+      console.log('Trying absolute path:', absolutePath);
+      img.src = absolutePath;
+    } else {
+      console.log('Already tried absolute path, hiding image');
+      img.style.display = 'none';
+    }
+  }
 } 

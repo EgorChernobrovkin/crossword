@@ -8,6 +8,10 @@ export interface CrosswordWord {
     col: number;
     direction: 'across' | 'down';
   };
+  congratulation?: {
+    message: string;
+    imageUrl: string;
+  };
 }
 
 export interface CrosswordState {

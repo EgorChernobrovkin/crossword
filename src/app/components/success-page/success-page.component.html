@@ -1,15 +1,30 @@
 <div class="page-container">
   <div class="content-container">
     <div class="card">
-      <div class="card-content text-center">
-        <span class="material-icon success-icon">emoji_events</span>
-        <h1 class="card-title">Congratulations!</h1>
-        <p class="card-subtitle">You've successfully completed the crossword puzzle!</p>
-        
-        <button class="button primary" (click)="router.navigate(['/'])">
-          <span class="material-icon">replay</span>
-          Play Again
-        </button>
+      <div class="card-content">
+        <div class="success-message">
+          <span class="material-icon">emoji_events</span>
+          <div class="congratulation-content">
+            <h3>Hyvää syntymäpäivää, rakkaani!</h3>
+
+            <p class="additional-text">
+              Не совсем одно слово, но то, что хочется говорить тебе весь день, чтобы ты знала, что я тебя люблю.
+            </p>
+
+            <p class="additional-text">
+              Так как я не смог придумать, что еще подарить, подумал что стоит дать тебе возможность самой выбрать.
+            </p>
+
+            <img [src]="'assets/images/congratulations/100_eur_coupon.webp'"
+                 class="congratulation-image">
+
+            <p class="additional-text">
+              Надеюсь тебе понравилось играть.
+            </p>
+
+            <h3>С днем рождения!</h3>
+          </div>
+        </div>
       </div>
     </div>
   </div>

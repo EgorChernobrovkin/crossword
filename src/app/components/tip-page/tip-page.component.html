@@ -6,13 +6,13 @@
           <div class="navigation-bar">
             <button class="button text" (click)="onBack()">
               <span class="material-icon">arrow_back</span>
-              Back to Grid
+              Назад
             </button>
           </div>
 
           <div class="tip-content">
             <div class="clue-section">
-              <span class="word-number">Word #{{currentWord.id}}</span>
+              <span class="word-number">Слово #{{currentWord.id}}</span>
               <h2 class="card-title">{{currentTip}}</h2>
             </div>
 
@@ -42,7 +42,19 @@
 
               <div class="success-message" *ngIf="isWordSolved" [@slideIn]>
                 <span class="material-icon">check_circle</span>
-                <p>Great job! You solved this word correctly!</p>
+                <div class="congratulation-content">
+                  <h3>Отличная работа! Ты правильно разгадала это слово!</h3>
+                  
+                  <p *ngIf="currentWord.congratulation?.message" class="additional-text">
+                    {{ currentWord.congratulation?.message }}
+                  </p>
+
+                  <img *ngIf="currentWord.congratulation?.imageUrl" 
+                       [src]="currentWord.congratulation?.imageUrl" 
+                       [alt]="'Congratulation image for ' + currentWord.word"
+                       class="congratulation-image"
+                       (error)="onImageError($event)">
+                </div>
               </div>
             </div>
           </div>

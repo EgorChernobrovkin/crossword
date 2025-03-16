@@ -1,13 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { CrosswordService } from '../../services/crossword.service';
 import { CrosswordWord } from '../../models/crossword.model';
 import { CrosswordState } from '../../store/crossword.state';
 import * as CrosswordActions from '../../store/crossword.actions';
 import { Subject, combineLatest } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 interface GridCell {
@@ -38,8 +38,10 @@ interface GridCell {
   ]
 })
 export class CrosswordGridComponent implements OnInit, OnDestroy {
-  readonly GRID_ROWS = 13; // Configurable number of rows
-  readonly GRID_COLS = 14; // Configurable number of columns
+  @ViewChild('completionSection') completionSection?: ElementRef;
+  
+  readonly GRID_ROWS = 13;
+  readonly GRID_COLS = 14;
   
   grid: GridCell[] = this.createEmptyGrid();
   gridTemplateColumns = `repeat(${this.GRID_COLS}, 1fr)`;
@@ -53,7 +55,18 @@ export class CrosswordGridComponent implements OnInit, OnDestroy {
     private store: Store<{ crossword: CrosswordState }>,
     public router: Router,
     private crosswordService: CrosswordService
-  ) {}
+  ) {
+    // Listen for navigation events
+    this.router.events.pipe(
+      takeUntil(this.destroy$),
+      filter(event => event instanceof NavigationEnd && event.url === '/')
+    ).subscribe(() => {
+      // When navigating back to the main page, check if we need to scroll
+      if (this.isPuzzleComplete) {
+        setTimeout(() => this.scrollToCompletionSection(), 500);
+      }
+    });
+  }
 
   private createEmptyGrid(): GridCell[] {
     const totalCells = this.GRID_ROWS * this.GRID_COLS;
@@ -76,6 +89,13 @@ export class CrosswordGridComponent implements OnInit, OnDestroy {
     };
   }
 
+  private scrollToCompletionSection() {
+    if (!this.completionSection) return;
+    
+    const element = this.completionSection.nativeElement;
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
   ngOnInit() {
     // Load crossword data
     this.store.dispatch(CrosswordActions.loadCrosswordData());
@@ -88,10 +108,17 @@ export class CrosswordGridComponent implements OnInit, OnDestroy {
     ])
     .pipe(takeUntil(this.destroy$))
     .subscribe(([words, solvedWordIds, isPuzzleComplete]) => {
+      const wasComplete = this.isPuzzleComplete;
+      
       this.words = words;
       this.solvedWordIds = solvedWordIds;
       this.isPuzzleComplete = isPuzzleComplete;
       this.initializeGrid();
+
+      // If puzzle just completed, scroll after a short delay
+      if (isPuzzleComplete && !wasComplete) {
+        setTimeout(() => this.scrollToCompletionSection(), 500);
+      }
     });
   }
 
