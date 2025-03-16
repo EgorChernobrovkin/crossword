@@ -40,7 +40,7 @@
                 <p *ngFor="let clue of getCurrentExtraClue()">{{ clue }}</p>
               </div>
 
-              <div class="success-message" *ngIf="isWordSolved" [@slideIn]>
+              <div #successSection class="success-message" *ngIf="isWordSolved" [@slideIn]>
                 <span class="material-icon">check_circle</span>
                 <div class="congratulation-content">
                   <h3>Отличная работа! Ты правильно разгадала это слово!</h3>

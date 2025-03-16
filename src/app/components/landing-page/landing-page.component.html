@@ -1,0 +1,31 @@
+<div class="haiku" *ngIf="showHaiku" @haikuAnimation>
+  <div class="haiku-line" *ngFor="let line of displayedWords">
+    <span class="haiku-word" *ngFor="let word of line">
+      <span *ngIf="word.visible" [@wordAnimation]="word.animated ? 'visible' : 'void'">{{ word.text }}</span>
+      <span *ngIf="!word.visible">&nbsp;</span>
+    </span>
+  </div>
+</div>
+
+<div class="page-container" *ngIf="showContent" [@contentAnimation]>
+  <div class="content-container">
+    <div class="card">
+      <div class="card-content">
+        <div class="landing-content">
+          <h1 class="title">Добро пожаловать в увлекательное Kati's Crossword Adventure! 🎮</h1>
+          
+          <div class="foreword">
+            <p>Дорогая Катя,</p>
+            <p>Добро пожаловать в эту особую игру, кроссворд-охота за сокровищами, созданную специально для тебя! Эта игра сочетает твою любовь к квестам, головоломкам и нашим внутренним шутеючкам.</p>
+            <p>Ты готова?</p>
+          </div>
+
+          <button class="button primary" routerLink="/crossword">
+            <span class="material-icon">play_arrow</span>
+            Начать Kati's Crossword Adventure!
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -7,7 +7,7 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 import { AppComponent } from './app/app.component';
-import { routes } from './app/app-routing.module';
+import { routes } from './app/app.routes';
 import { crosswordReducer } from './app/store/crossword.reducer';
 import { CrosswordEffects } from './app/store/crossword.effects';
 

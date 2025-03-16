@@ -147,9 +147,7 @@ export class CrosswordGridComponent implements OnInit, OnDestroy {
 
     if (clickedWord) {
       this.store.dispatch(CrosswordActions.selectWord({ wordId: clickedWord.id }));
-      this.router.navigate(['/tip'], { 
-        state: { wordId: clickedWord.id }
-      });
+      this.router.navigate(['/tip', clickedWord.id]);
     }
   }
 

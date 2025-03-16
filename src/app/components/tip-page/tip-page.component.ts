@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { CrosswordService } from '../../services/crossword.service';
 import { CrosswordWord } from '../../models/crossword.model';
@@ -30,6 +30,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
   ]
 })
 export class TipPageComponent implements OnInit, OnDestroy {
+  @ViewChild('successSection') successSection?: ElementRef;
+  
   wordForm: FormGroup = this.fb.group({});
   letterControls: number[] = [];
   currentWord?: CrosswordWord;
@@ -42,14 +44,14 @@ export class TipPageComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private route: ActivatedRoute,
     private store: Store<{ crossword: CrosswordState }>,
     private crosswordService: CrosswordService
   ) {
-    const navigation = this.router.getCurrentNavigation();
-    const wordId = navigation?.extras?.state?.['wordId'];
+    const wordId = this.route.snapshot.params['wordId'];
 
     if (!wordId) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/crossword']);
       return;
     }
 
@@ -61,9 +63,10 @@ export class TipPageComponent implements OnInit, OnDestroy {
     ])
     .pipe(takeUntil(this.destroy$))
     .subscribe(([words, solvedWordIds]) => {
+      const wasNotSolved = !this.isWordSolved;
       this.currentWord = words.find(w => w.id === wordId);
       if (!this.currentWord) {
-        this.router.navigate(['/']);
+        this.router.navigate(['/crossword']);
         return;
       }
 
@@ -79,6 +82,11 @@ export class TipPageComponent implements OnInit, OnDestroy {
         this.currentWord.word.split('').forEach((letter, index) => {
           this.wordForm.get(`letter${index}`)?.setValue(letter);
         });
+        
+        // If the word was just solved, scroll to success section
+        if (wasNotSolved) {
+          setTimeout(() => this.scrollToSuccessSection(), 500);
+        }
       }
     });
   }
@@ -168,7 +176,7 @@ export class TipPageComponent implements OnInit, OnDestroy {
   }
 
   onBack() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/crossword']);
   }
 
   onImageError(event: any) {
@@ -186,5 +194,12 @@ export class TipPageComponent implements OnInit, OnDestroy {
       console.log('Already tried absolute path, hiding image');
       img.style.display = 'none';
     }
+  }
+
+  private scrollToSuccessSection() {
+    if (!this.successSection) return;
+    
+    const element = this.successSection.nativeElement;
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 } 
