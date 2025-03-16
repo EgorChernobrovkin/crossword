@@ -52,7 +52,7 @@
 @keyframes fall {
   0% {
     opacity: 0;
-    transform: translate(0, -10px);
+    transform: translate(0, -10px) rotate(0deg);
   }
   10% {
     opacity: 0.8;
@@ -62,7 +62,7 @@
   }
   100% {
     opacity: 0;
-    transform: translate(100px, 100vh);
+    transform: translate(var(--fall-distance), 100vh) rotate(360deg);
   }
 }
 
@@ -70,8 +70,11 @@
   0% {
     margin-left: 0;
   }
-  50% {
-    margin-left: 50px;
+  25% {
+    margin-left: 25px;
+  }
+  75% {
+    margin-left: -25px;
   }
   100% {
     margin-left: 0;
@@ -97,6 +100,7 @@
   background: var(--sakura);
   border-radius: 150% 0 150% 0;
   transform-origin: center;
+  opacity: 0;
 
   &::after {
     content: '';
@@ -110,12 +114,13 @@
     transform: rotate(15deg);
   }
 
-  @for $i from 1 through 15 {
+  @for $i from 1 through 10 {
     &:nth-child(#{$i}) {
+      --fall-distance: #{math.floor(math.random() * 200) - 100}px;
       left: #{math.floor(math.random() * 100)}vw;
       top: -20px;
       animation: 
-        fall #{math.floor(math.random() * 5) + 10}s linear infinite,
+        fall #{math.floor(math.random() * 5) + 8}s linear infinite,
         sway #{math.floor(math.random() * 4) + 3}s ease-in-out infinite;
       animation-delay: -#{math.floor(math.random() * 5)}s;
     }
