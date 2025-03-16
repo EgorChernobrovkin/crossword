@@ -1,7 +1,7 @@
 :host {
   display: block;
-  margin: 0 auto;
-  padding: 20px;
+  width: 100%;
+  height: 100%;
 }
 
 .navigation-bar {
@@ -44,8 +44,8 @@
 }
 
 .content-container {
-  width: fit-content;
-  min-width: 600px;
+  width: 100%;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -53,8 +53,7 @@
   background: var(--surface-1);
   border-radius: var(--border-radius-lg);
   border: 1px solid var(--border-color);
-  width: fit-content;
-  min-width: 100%;
+  width: 100%;
 }
 
 .card-content {
@@ -156,17 +155,27 @@
 }
 
 .word-input {
-  display: inline-flex;
-  flex-wrap: nowrap;
-  gap: var(--spacing-4);
-  padding: 0 var(--spacing-4);
+  display: flex;
   justify-content: center;
+  flex-wrap: nowrap;
+  gap: var(--spacing-3);
   
   .form-field {
-    width: 48px;
-    height: 48px;
-    flex: 0 0 48px;
-    margin: 0;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    
+    @media (max-width: 600px) {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+    }
+    
+    @media (max-width: 400px) {
+      width: 32px;
+      height: 32px;
+      flex: 0 0 32px;
+    }
 
     input {
       width: 100%;
@@ -200,11 +209,12 @@
 }
 
 .page-container {
-  width: 100%;
-  margin: 0 auto;
-  padding: 40px 20px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 20px;
 }
 
 .page-title {
