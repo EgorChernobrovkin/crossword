@@ -34,8 +34,17 @@ interface GridCell {
         style({ transform: 'translateY(20px)', opacity: 0 }),
         animate('300ms ease-out', style({ transform: 'translateY(0)', opacity: 1 }))
       ])
+    ]),
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('300ms ease-out', style({ opacity: 1 }))
+      ])
     ])
-  ]
+  ],
+  host: {
+    '[@fadeIn]': 'true'
+  }
 })
 export class CrosswordGridComponent implements OnInit, OnDestroy {
   @ViewChild('completionSection') completionSection?: ElementRef;

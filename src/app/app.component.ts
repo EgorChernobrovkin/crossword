@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { fadeAnimation } from './animations/fade.animation';
 
 @Component({
   selector: 'app-root',
@@ -11,10 +12,12 @@ import { RouterOutlet } from '@angular/router';
         <div class="petal"></div>
       }
     </div>
-    <router-outlet></router-outlet>
+    <div class="page-container">
+      <router-outlet #outlet="outlet"></router-outlet>
+    </div>
   `,
   styles: [`
-    main {
+    .page-container {
       min-height: 100vh;
       background-color: var(--surface-1);
     }

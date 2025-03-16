@@ -26,8 +26,17 @@ import { trigger, transition, style, animate } from '@angular/animations';
         style({ transform: 'translateY(20px)', opacity: 0 }),
         animate('300ms ease-out', style({ transform: 'translateY(0)', opacity: 1 }))
       ])
+    ]),
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('300ms ease-out', style({ opacity: 1 }))
+      ])
     ])
-  ]
+  ],
+  host: {
+    '[@fadeIn]': 'true'
+  }
 })
 export class TipPageComponent implements OnInit, OnDestroy {
   @ViewChild('successSection') successSection?: ElementRef;
